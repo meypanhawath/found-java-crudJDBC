@@ -117,14 +117,36 @@ public class CrudOperation {
 
         int rowsUpdated = ps.executeUpdate();
 
-        if (rowsUpdated > 0) System.out.println("ការបញ្ចូលទិន្នន៍យ ជោគជ៍យ");
-        else System.out.println("ការបញ្ជូលទិន្នន៍យ បរាជ៍យ");
+        if (rowsUpdated > 0) System.out.println("ការកែប្រែទិន្នន៍យ ជោគជ៍យ");
+        else System.out.println("ការកែប្រែទិន្នន៍យ បរាជ៍យ");
 
     }
 
     public void deleteUserByID() throws  SQLException {
-        Connection con =
+        Connection con = DriverManager.getConnection(url, user, password);
+
+        System.out.print("Delete User By ID: ");
+        int id = Integer.parseInt(input.nextLine());
+
+        if (!existByID(id)){
+            System.out.println("User does not exits!");
+            return;
+        }
+
+        String sql = """
+                DELETE FROM users
+                WHERE id = ?
+                """;
+
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+
+        int rowsUpdated = ps.executeUpdate();
+
+        if (rowsUpdated > 0) System.out.println("ការលុបទិន្នន៍យ ជោគជ៍យ");
+        else System.out.println("ការលុបទិន្នន៍យ បរាជ៍យ");
     }
+
 
     public void displayAllUser() throws SQLException {
         Connection con = DriverManager.getConnection(url, user, password);
@@ -193,8 +215,6 @@ public class CrudOperation {
                 System.out.println(e.getMessage());
             }
         }
-
-
 
     }
 }
